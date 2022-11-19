@@ -1,0 +1,42 @@
+{
+    "extends": ["eslint-config-airbnb-base", "prettier"],
+    "plugins": ["prettier"],
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "rules": {
+        "import/prefer-default-export": "off",
+        "no-case-declarations": "off",
+        "import/extensions": "off",
+        "consistent-return": "warn",
+        "no-console": "warn",
+        "prefer-const": "error",
+        "sort-imports": [
+            "error",
+            {
+                "ignoreDeclarationSort": true
+            }
+        ],
+        "import/order": [
+            "error",
+            {
+                "alphabetize": { "order": "asc", "caseInsensitive": true },
+                "groups": [
+                    "builtin",
+                    "external",
+                    "internal",
+                    "parent",
+                    "sibling",
+                    "index",
+                    "object"
+                ],
+                "newlines-between": "never",
+                "pathGroupsExcludedImportTypes": ["builtin"]
+            }
+        ]
+    },
+    "parserOptions": {
+        "ecmaVersion": "latest"
+    }
+}
