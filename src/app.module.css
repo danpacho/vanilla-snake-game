@@ -21,12 +21,6 @@
     transform: translateY(100%);
 }
 
-@media screen and (min-width: 1200px) {
-    .container {
-        display: none;
-    }
-}
-
 .btn {
     display: flex;
     align-items: center;
@@ -78,10 +72,32 @@
 
 .score {
     color: black;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     font-weight: 700;
     font-style: italic;
     padding-left: 0.5rem;
 
     user-select: none;
+}
+
+@media screen and (min-width: 1200px) {
+    .canvas {
+        display: none;
+    }
+    .container::after {
+        content: "창 줄여주세뵤로롱!";
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 5rem 4rem 0 4rem;
+    }
+
+    .score {
+        overflow: hidden;
+        word-break: keep-all;
+        width: 5rem;
+        height: 4rem;
+    }
 }
