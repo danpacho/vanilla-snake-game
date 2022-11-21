@@ -1,19 +1,14 @@
 class CanvasManager {
-    /** @type CanvasManager */
-    static #instance
-
     #pixelRatio
 
     #canvas
 
-    /** @type {CanvasRenderingContext2D} */
     #ctx
 
     /**
      * @param {{ width: number, height: number }} option
-     * @param {string} [targetID]
      */
-    constructor(option, targetID = "app") {
+    constructor(option) {
         const canvas = document.createElement("canvas")
         const ctx = canvas.getContext("2d")
 
@@ -25,14 +20,13 @@ class CanvasManager {
         this.#ctx = ctx
         this.option = option
 
-        this.#mount(targetID)
-        this.#setupCanvas(option)
+        this.#setupCanvasSize(option)
     }
 
     /**
      * @param {string} [targetID]
      */
-    #mount(targetID = "app") {
+    render(targetID = "app") {
         const renderTarget = document.getElementById(targetID)
         renderTarget?.appendChild(this.#canvas)
     }
@@ -40,7 +34,7 @@ class CanvasManager {
     /**
      * @param {{ width: number, height: number }} option
      */
-    #setupCanvas(option) {
+    #setupCanvasSize(option) {
         this.#canvas.setAttribute("width", String(option.width))
         this.#canvas.setAttribute("height", String(option.height))
 
@@ -57,13 +51,6 @@ class CanvasManager {
 
     clearCanvas() {
         this.#ctx?.clearRect(0, 0, this.option.width, this.option.height)
-    }
-
-    trailingCanvas(opacity = 0.75) {
-        const TRAILING_COLOR = `rgba(255, 255, 255, ${String(opacity)})`
-        // @ts-ignore
-        this.#ctx.fillStyle = TRAILING_COLOR
-        this.#ctx?.fillRect(0, 0, this.option.width, this.option.height)
     }
 }
 
