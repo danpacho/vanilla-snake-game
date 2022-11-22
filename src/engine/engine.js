@@ -90,19 +90,6 @@ class SnakeEngine {
         }
     }
 
-    #updateGameUIState() {
-        this.#snake.moveSnakeBody()
-
-        if (this.#snake.getSnakeFoodEatenState()) {
-            this.#setScoreBoard(
-                (/** @type {number} */ score) => score + SCORE.FOOD
-            )
-            this.#snake.addSnakeBody()
-        }
-
-        this.#setScoreBoard((/** @type {number} */ score) => score + SCORE.TIME)
-    }
-
     #updateGameUI() {
         this.#snake.gameCanvas.clearCanvas()
 
@@ -121,6 +108,19 @@ class SnakeEngine {
             size: this.#squareSize,
             fill: COLOR.FOOD,
         })
+    }
+
+    #updateGameUIState() {
+        this.#snake.moveSnakeBody()
+
+        if (this.#snake.getSnakeFoodEatenState()) {
+            this.#setScoreBoard(
+                (/** @type {number} */ score) => score + SCORE.FOOD
+            )
+            this.#snake.addSnakeBody()
+        }
+
+        this.#setScoreBoard((/** @type {number} */ score) => score + SCORE.TIME)
     }
 
     #stopGameUI() {
