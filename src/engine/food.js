@@ -1,5 +1,4 @@
-import { COLOR } from "../constant/snake.js"
-import { getRandomGridCoord, renderSquare } from "./util.js"
+import { getRandomGridCoord } from "./util.js"
 
 class Food {
     #foodSize
@@ -32,16 +31,6 @@ class Food {
         this.#food = getRandomGridCoord({
             gridSize: this.#foodSize,
             gridLimit: this.#gridLimit,
-        })
-    }
-
-    render() {
-        this.updateLocation()
-        renderSquare({
-            ctx: this.#ctx,
-            coord: this.#food,
-            size: this.#foodSize,
-            fill: COLOR.FOOD,
         })
     }
 }
