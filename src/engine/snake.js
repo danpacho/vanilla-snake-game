@@ -61,7 +61,6 @@ class Snake {
         this.ctx = this.gameCanvas.getCtx()
 
         this.food = new Food({
-            ctx: this.ctx,
             foodSize: this.squareSize,
             gridLimit: rowCount / 2 - 1,
         })
@@ -180,7 +179,7 @@ class Snake {
         ]
     }
 
-    getSnakeEngine() {
+    getSnake() {
         return Snake.#instance ?? this
     }
 }

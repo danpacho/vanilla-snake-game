@@ -3,16 +3,14 @@ import { getRandomGridCoord } from "./util.js"
 class Food {
     #foodSize
 
-    #ctx
-
     #food
 
     #gridLimit
 
     /**
-     * @param {{foodSize: number, gridLimit: number, ctx: CanvasRenderingContext2D}} FoodOption
+     * @param {{foodSize: number, gridLimit: number}} FoodOption
      */
-    constructor({ foodSize, gridLimit, ctx }) {
+    constructor({ foodSize, gridLimit }) {
         this.#food = getRandomGridCoord({
             gridSize: foodSize,
             gridLimit,
@@ -20,7 +18,6 @@ class Food {
 
         this.#gridLimit = gridLimit
         this.#foodSize = foodSize
-        this.#ctx = ctx
     }
 
     getLocation() {
