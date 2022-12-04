@@ -73,7 +73,7 @@ class SnakeEngine {
 
         this.#snake.gameCanvas.render(renderTargetID)
 
-        this.#playGame()
+        this.#renderGame()
     }
 
     /**
@@ -82,11 +82,8 @@ class SnakeEngine {
     updateLevel(newLevel) {
         if (this.#isGameOver) {
             this.#setLevel(newLevel)
-
-            this.#resetGameUI()
-            this.#resetGameUIState()
-
-            this.#playGame()
+            this.#resetGame()
+            this.#renderGame()
         }
     }
 
@@ -123,6 +120,11 @@ class SnakeEngine {
         this.#setScoreBoard((/** @type {number} */ score) => score + SCORE.TIME)
     }
 
+    #updateGame() {
+        this.#updateGameUIState()
+        this.#updateGameUI()
+    }
+
     #stopGameUI() {
         if (this.#currentPlayID && this.#throttleID) {
             window.cancelAnimationFrame(this.#currentPlayID)
@@ -140,11 +142,16 @@ class SnakeEngine {
         )
     }
 
-    #resetGameUI() {
+    #stopGame() {
+        this.#stopGameUIState()
+        this.#stopGameUI()
+    }
+
+    #restartGameUI() {
         this.#snake.gameCanvas.clearCanvas()
     }
 
-    #resetGameUIState() {
+    #restartGameUIState() {
         this.#snake.resetSnakeState()
         this.#isGameOver = false
 
@@ -154,22 +161,25 @@ class SnakeEngine {
         this.#throttleID = null
     }
 
-    #playGame = () => {
+    #resetGame() {
+        this.#restartGameUIState()
+        this.#restartGameUI()
+    }
+
+    #renderGame = () => {
         const throttle = () => {
             this.#throttleID = setTimeout(
-                this.#playGame,
+                this.#renderGame,
                 this.#level(),
                 "SNAKE_THROTTLE"
             )
         }
         this.#currentPlayID = window.requestAnimationFrame(throttle)
 
-        this.#updateGameUIState()
-        this.#updateGameUI()
+        this.#updateGame()
 
         if (this.#snake.getSnakeDeadState()) {
-            this.#stopGameUI()
-            this.#stopGameUIState()
+            this.#stopGame()
         }
     }
 }
