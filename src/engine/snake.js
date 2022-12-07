@@ -1,12 +1,11 @@
 import { KEYS_INFO, KEYS_TYPE_NAMES } from "../constant/snake.js"
-import { CanvasManager } from "./canvas.js"
 import { Food } from "./food.js"
 
 class Snake {
     /** @type {Snake} */
     static #instance
 
-    gameCanvas
+    canvas
 
     ctx
 
@@ -32,10 +31,11 @@ class Snake {
         direction: 2,
     }
 
+    /** @typedef {{ setCanvasSize: ({ width, height }: { width: number, height: number }) => void, getCtx: () => CanvasRenderingContext2D, getCanvas: () => HTMLCanvasElement, render: (targetID?: string | undefined) => void, clearCanvas: () => void, setCanvasStyle: (styleClass?: string | undefined) => void  }} CanvasInterface */
     /**
-     * @param {{ boardSize: number, rowCount: number, className?: string }} option
+     * @param {{ canvas: CanvasInterface ,boardSize: number, rowCount: number, className?: string }} option
      */
-    constructor({ boardSize, rowCount, className }) {
+    constructor({ canvas, boardSize, rowCount, className }) {
         Snake.#instance = this
 
         this.boardSize = boardSize
@@ -47,6 +47,7 @@ class Snake {
             [this.squareSize * 2, 0],
             [this.squareSize * 3, 0],
         ]
+
         this.actionType = {
             ArrowUp: [0, -this.squareSize],
             ArrowDown: [0, this.squareSize],
@@ -54,20 +55,18 @@ class Snake {
             ArrowLeft: [-this.squareSize, 0],
         }
 
-        this.gameCanvas = new CanvasManager({
+        this.canvas = canvas
+        this.canvas.setCanvasSize({
             width: boardSize,
             height: boardSize,
         })
-        this.ctx = this.gameCanvas.getCtx()
+        this.canvas.setCanvasStyle(className)
+        this.ctx = this.canvas.getCtx()
 
         this.food = new Food({
             foodSize: this.squareSize,
             gridLimit: rowCount / 2 - 1,
         })
-
-        if (className) {
-            this.gameCanvas.getCanvas().classList.add(className)
-        }
 
         this.#setupKeyboardEvent()
     }

@@ -1,26 +1,25 @@
-import { CanvasManager } from "./canvas.js"
-import { renderSquare } from "./util.js"
+import { util } from "./utils.js"
 
 class Board {
     #board
 
+    /** @typedef  {{ setCanvasSize: ({ width, height }: { width: number, height: number }) => void, getCtx: () => CanvasRenderingContext2D, getCanvas: () => HTMLCanvasElement, render: (targetID?: string | undefined) => void, setCanvasStyle: (styleClass?: string | undefined) => void }} CanvasInterface */
     /**
-     * @param {{boardSize: number, className?: string}} BoardOption
+     * @param {{canvas: CanvasInterface, boardSize: number, className?: string}} BoardOption
      */
-    constructor({ boardSize, className }) {
-        this.#board = new CanvasManager({
+    constructor({ canvas, boardSize, className }) {
+        this.#board = canvas
+        this.#board.setCanvasSize({
             width: boardSize,
             height: boardSize,
         })
-        if (className) {
-            this.#board.getCanvas().classList.add(className)
-        }
+        this.#board.setCanvasStyle(className)
     }
 
     /**
      * @param {{step: number, size: number, fillColorLogic: (boardIndex: number) => string, renderTargetID?: string}} drawOption
      */
-    renderBoard({ step, size, fillColorLogic, renderTargetID = "app" }) {
+    render({ step, size, fillColorLogic, renderTargetID = "app" }) {
         this.#board.render(renderTargetID)
 
         /** @type {Array<[number, number]>} */
@@ -30,14 +29,13 @@ class Board {
         ])
 
         allBoardCoordinate.forEach((coord, i) => {
-            renderSquare({
+            util.renderSquare({
                 coord,
                 ctx: this.#board.getCtx(),
                 fill: fillColorLogic(i),
                 size,
             })
         })
-        return allBoardCoordinate
     }
 }
 
