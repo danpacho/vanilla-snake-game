@@ -2,8 +2,9 @@ import { INITIAL_GAME_LEVEL, INITIAL_GAME_SCORE } from "../constant/game.js"
 import { COLOR, ENDING_CREDIT, SCORE } from "../constant/snake.js"
 import { signal } from "../core/core.js"
 import { Board } from "./board.js"
+import { CanvasManager } from "./canvas.js"
 import { Snake } from "./snake.js"
-import { randBetweenMinMax, renderSquare } from "./util.js"
+import { util } from "./utils.js"
 
 class SnakeEngine {
     #snake
@@ -42,13 +43,17 @@ class SnakeEngine {
         this.#level = level
         this.#setLevel = setLevel
 
+        const snakeCanvas = new CanvasManager()
         this.#snake = new Snake({
+            canvas: snakeCanvas,
             boardSize,
             rowCount,
             className,
         })
 
+        const boardCanvas = new CanvasManager()
         this.#board = new Board({
+            canvas: boardCanvas,
             boardSize,
             className,
         })
@@ -60,10 +65,11 @@ class SnakeEngine {
     }
 
     /**
+     * Render snake game
      * @param {string} [renderTargetID]
      */
     render(renderTargetID = "app") {
-        this.#board.renderBoard({
+        this.#board.render({
             fillColorLogic: (i) =>
                 i % 2 === 0 ? COLOR.BOARD.EVEN : COLOR.BOARD.ODD,
             size: this.#rowCount / 2,
@@ -71,12 +77,13 @@ class SnakeEngine {
             renderTargetID,
         })
 
-        this.#snake.gameCanvas.render(renderTargetID)
+        this.#snake.canvas.render(renderTargetID)
 
         this.#renderGame()
     }
 
     /**
+     * Update snake game's level
      * @param {number} newLevel
      */
     updateLevel(newLevel) {
@@ -88,10 +95,10 @@ class SnakeEngine {
     }
 
     #updateGameUI() {
-        this.#snake.gameCanvas.clearCanvas()
+        this.#snake.canvas.clearCanvas()
 
         this.#snake.snakeBody.forEach((coord) => {
-            renderSquare({
+            util.renderSquare({
                 coord,
                 ctx: this.#snake.ctx,
                 size: this.#squareSize,
@@ -99,7 +106,7 @@ class SnakeEngine {
             })
         })
 
-        renderSquare({
+        util.renderSquare({
             coord: this.#snake.food.getLocation(),
             ctx: this.#snake.ctx,
             size: this.#squareSize,
@@ -135,11 +142,12 @@ class SnakeEngine {
     #stopGameUIState() {
         this.#isGameOver = true
 
-        this.#setScoreBoard(
-            `${this.scoreBoard()} ${
-                ENDING_CREDIT[randBetweenMinMax(0, ENDING_CREDIT.length - 1)]
-            }`
-        )
+        const finalGameScoreMessage = `${this.scoreBoard()} ${
+            ENDING_CREDIT[
+                util.randIntBetweenMinMax(0, ENDING_CREDIT.length - 1)
+            ]
+        }`
+        this.#setScoreBoard(finalGameScoreMessage)
     }
 
     #stopGame() {
@@ -148,7 +156,7 @@ class SnakeEngine {
     }
 
     #restartGameUI() {
-        this.#snake.gameCanvas.clearCanvas()
+        this.#snake.canvas.clearCanvas()
     }
 
     #restartGameUIState() {
