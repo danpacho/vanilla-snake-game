@@ -6,21 +6,21 @@ class CanvasManager {
     #ctx
 
     /**
-     * @param {{ width: number, height: number }} option
+     * @param {{ width: number, height: number }} [option]
      */
     constructor(option) {
         const canvas = document.createElement("canvas")
         const ctx = canvas.getContext("2d")
 
-        this.#pixelRatio = window.devicePixelRatio > 1 ? 2 : 1
         this.#canvas = canvas
+        this.#pixelRatio = window.devicePixelRatio > 1 ? 2 : 1
+
         if (ctx === null) {
             throw Error("canvas ctx is null")
         }
         this.#ctx = ctx
-        this.option = option
 
-        this.#setupCanvasSize(option)
+        if (option) this.setCanvasSize(option)
     }
 
     /**
@@ -34,11 +34,21 @@ class CanvasManager {
     /**
      * @param {{ width: number, height: number }} option
      */
-    #setupCanvasSize(option) {
+    setCanvasSize(option) {
+        this.width = option.width
+        this.height = option.height
+
         this.#canvas.setAttribute("width", String(option.width))
         this.#canvas.setAttribute("height", String(option.height))
 
         this.#ctx?.scale(this.#pixelRatio, this.#pixelRatio)
+    }
+
+    /**
+     * @param {string} [styleClass]
+     */
+    setCanvasStyle(styleClass) {
+        if (styleClass) this.#canvas.classList.add(styleClass)
     }
 
     getCanvas() {
@@ -50,7 +60,8 @@ class CanvasManager {
     }
 
     clearCanvas() {
-        this.#ctx?.clearRect(0, 0, this.option.width, this.option.height)
+        // @ts-ignore
+        this.#ctx?.clearRect(0, 0, this.width, this.height)
     }
 }
 
