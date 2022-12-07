@@ -11,12 +11,16 @@ const SnakeGame = () => {
         className: style.canvas,
     })
 
-    const AppContainer = component(
-        () => html`
+    const AppContainer = () =>
+        component(
+            () => html`
             <div class="${style.container}">
+
                 <div id="game" class="${style.canvasContainer}"></div>
+
                 <nav class="${style.stateContainer}">
                     <div id="score"></div>
+
                     <div
                         id="levelContainer"
                         class="${style.levelContainer}"
@@ -24,7 +28,7 @@ const SnakeGame = () => {
                 </div>
             </div>
         `
-    )
+        )
 
     /**
      * @param {{text: string, level: number}} props
@@ -52,13 +56,12 @@ const SnakeGame = () => {
 
     return {
         render: () => {
-            AppContainer.render()
-            Snake.render("game")
-
+            AppContainer().render()
             GAME_LEVEL.forEach((levelProps) => {
                 LevelButton(levelProps).render("levelContainer")
             })
             Score().render("score")
+            Snake.render("game")
         },
     }
 }

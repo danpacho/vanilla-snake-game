@@ -1,4 +1,4 @@
-import { getRandomGridCoord } from "./util.js"
+import { util } from "./utils.js"
 
 class Food {
     #foodSize
@@ -11,7 +11,7 @@ class Food {
      * @param {{foodSize: number, gridLimit: number}} FoodOption
      */
     constructor({ foodSize, gridLimit }) {
-        this.#food = getRandomGridCoord({
+        this.#food = util.getRandomGridCoord({
             gridSize: foodSize,
             gridLimit,
         })
@@ -25,7 +25,7 @@ class Food {
     }
 
     updateLocation() {
-        this.#food = getRandomGridCoord({
+        this.#food = util.getRandomGridCoord({
             gridSize: this.#foodSize,
             gridLimit: this.#gridLimit,
         })
