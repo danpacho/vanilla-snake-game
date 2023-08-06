@@ -67,7 +67,7 @@ let globalSignalCount = 0
 /**
  * @template T
  * Signal that contains trackable data
- * @param initialData {T} initail data type
+ * @param initialData {T} initial data type
  * @returns {[() => T, (setter: any) => T, () => void, () => T]}
  */
 const signal = (initialData) => {
