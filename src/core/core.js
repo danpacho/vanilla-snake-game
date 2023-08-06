@@ -16,7 +16,7 @@ const track = (trackFunction) => {
     })
 
     try {
-        trackFunction() // initail setting: signal's connected channels
+        trackFunction() // initial setting: signal's connected channels
     } finally {
         globalExecutionContext.pop() // remove execution context
     }
@@ -26,10 +26,10 @@ const track = (trackFunction) => {
 const initialSignalContainer = {}
 const previousSignalContainer = {}
 
-const isDepsShouldUpdate = (currentGlobalDeps, currentConnecteChannelsDeps) =>
-    currentGlobalDeps.size !== currentConnecteChannelsDeps.size ||
+const isDepsShouldUpdate = (currentGlobalDeps, currentConnectedChannelsDeps) =>
+    currentGlobalDeps.size !== currentConnectedChannelsDeps.size ||
     [...currentGlobalDeps].every((value) =>
-        currentConnecteChannelsDeps.has(value)
+        currentConnectedChannelsDeps.has(value)
     ) === false
 
 /**

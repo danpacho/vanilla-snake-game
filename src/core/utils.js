@@ -1,6 +1,6 @@
 // @ts-nocheck
 /**
- * @param data arraylike data
+ * @param data array-like data
  * @param render describe rendering logic
  */
 const map = (data, render) =>
